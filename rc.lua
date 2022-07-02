@@ -57,7 +57,7 @@ end
 beautiful.init("/home/charles/.config/awesome/themes/zenburn/theme.lua")
 
 -- Default terminal and editor to run.
-terminal = "kitty"
+terminal = "alacritty"
 editor = os.getenv("EDITOR") or "vim"
 editor_cmd = terminal .. " -e " .. editor
 
@@ -66,6 +66,8 @@ modkey = "Mod4"
 
 -- my layouts 
 awful.layout.layouts = {
+    
+    awful.layout.suit.tile,
     awful.layout.suit.spiral.dwindle,
     awful.layout.suit.floating,
    }
@@ -204,10 +206,10 @@ awful.screen.connect_for_each_screen(function(s)
 	    cpu_widget(),
 	    net_speed_widget(),
 	    mykeyboardlayout,
-            mytextclock,
-	    volume_widget{
-		    widget_type = 'arc'
+            volume_widget{
+		    widget_type = 'horizontal_bar'
 	    },
+	    mytextclock,
             wibox.widget.systray(),
         },
     }
@@ -248,8 +250,8 @@ globalkeys = gears.table.join(
         end,
         {description = "focus previous by index", group = "client"}
     ),
-    awful.key({ modkey,           }, "w", function () mymainmenu:show() end,
-              {description = "show main menu", group = "awesome"}),
+    --awful.key({ modkey,           }, "w", function () mymainmenu:show() end,
+              --{description = "show main menu", group = "awesome"}),
 
     -- Layout manipulation
     awful.key({ modkey, "Shift"   }, "j", function () awful.client.swap.byidx(  1)    end,
@@ -274,9 +276,11 @@ globalkeys = gears.table.join(
     -- Standard program
     awful.key({ modkey,           }, "Return", function () awful.spawn(terminal) end,
               {description = "open a terminal", group = "launcher"}),
+    awful.key({ modkey,		}, "w", function() awful.spawn("firefox") end,
+    	      {description = "open firefox", group = "Web"}),
     awful.key({ modkey, "Control" }, "r", awesome.restart,
               {description = "reload awesome", group = "awesome"}),
-    awful.key({ modkey, "Shift"   }, "x", awesome.quit,
+    awful.key({ modkey, "Shift"   }, "e", awesome.quit,
               {description = "quit awesome", group = "awesome"}),
     awful.key({ modkey,           }, "l",     function () awful.tag.incmwfact( 0.05)          end,
               {description = "increase master width factor", group = "layout"}),
@@ -490,7 +494,8 @@ awful.rules.rules = {
         role = {
           "AlarmWindow",  -- Thunderbird's calendar.
           "ConfigManager",  -- Thunderbird's about:config.
-          "pop-up",       -- e.g. Google Chrome's (detached) Developer Tools.
+          "pop-up", -- e.g. Google Chrome's (detached) Developer Tools.
+	  "Thunar",
         }
       }, properties = { floating = true }},
 
@@ -572,13 +577,24 @@ client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_n
 
 
 -- Autostart Apps
-awful.spawn.with_shell("nitrogen --restore")
 awful.spawn.with_shell("picom -b")
 awful.spawn.with_shell("nm-applet")
 awful.spawn.with_shell("kdeconnect-indicator")
+awful.spawn.with_shell("barrier")
 
 
 -- gaps
 beautiful.useless_gap = 10
 beautiful.gap_single_client = true
 
+--- Enable for lower memory consumption
+collectgarbage("setpause", 110)
+collectgarbage("setstepmul", 1000)
+gears.timer({
+	timeout = 5,
+	autostart = true,
+	call_now = true,
+	callback = function()
+		collectgarbage("collect")
+	end,
+})
