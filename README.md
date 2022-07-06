@@ -9,4 +9,4 @@
 - **`Flameshot`**
 - **`Rofi`**
 - **`Nitrogen`**
-- **`Picom`**
+- **`Picom`** [AUR](https://aur.archlinux.org/packages/picom-ibhagwan-git)
