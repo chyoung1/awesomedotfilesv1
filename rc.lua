@@ -583,7 +583,7 @@ awful.spawn.with_shell("picom -b")
 awful.spawn.with_shell("nm-applet")
 awful.spawn.with_shell("kdeconnect-indicator")
 awful.spawn.with_shell("barrier")
-awful.spawn.with.shell("wal -R")
+awful.spawn.with_shell("wal -R")
 
 -- gaps
 beautiful.useless_gap = 10
