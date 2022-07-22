@@ -1,5 +1,5 @@
 ### AwesomeWM Rice
-![Screenshot](screenshot/screenshot.png)                                           
+![Screenshot](screenshot.png)                                           
 ### Requirements
 - **`Awesome`**
 - **`Nerd-Fonts-Complete`** [AUR](https://aur.archlinux.org/packages/nerd-fonts-complete)
